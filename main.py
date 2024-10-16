@@ -1,6 +1,14 @@
 import os
 import csv
 
+def make_directory():
+    # Function to make the lists/ directory if it doesn't already exist
+    try:
+        os.mkdir("lists")
+    except FileExistsError:
+        pass
+
+
 def make_file(filepath):
     # Function to initially make the file
     try:
@@ -54,7 +62,10 @@ def delete(filepath,target):
             if row['name'] != target:
                 writer.writerow(row)
     os.replace(f"lists/{temppath}", f"lists/{filepath}")
+
+
 def print_list(filepath):
+    # Function to print the to-do list
     print(f"\n----------{filepath}----------\n")
     print(f"{"Name of entry":<35}{"Priority":<35}Completed")
     with open(f"lists/{filepath}.csv", mode='r') as csvfile:
@@ -65,7 +76,10 @@ def print_list(filepath):
             else:
                 row['completed'] = '❌'
             print(f"{row['name']:<35} {row['priority']:<35} {row['completed']}")
+
+
 def delete_if_empty(filepath):
+    # Function to delete the list if it is empty
     with open(f"lists/{filepath}.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
@@ -73,15 +87,16 @@ def delete_if_empty(filepath):
             print("There are no entries in this list remaining, the list will now be deleted.")
             os.remove(f"lists/{filepath}.csv")
 
-multiChoice = ""
-print("\n---TO-DO LIST---\n")
+# Main program logic
 
+print("\n---TO-DO LIST---\n")
 print("Would you like to:\nMake a new To-Do List (A)\nView a To-Do List (B)\nDelete an existing list (C)")
 option = input("").upper()
 
 while option not in ["A", "B", "C"]:
     option = input("").upper()
 
+make_directory()
 if option == "A":
     print("\nEnter the name of the to-do list: ")
     listname = input()
@@ -98,9 +113,7 @@ if option == "A":
             save_to_file(listname, nameInput, priorityInput, completedInput)
         else:
             break
-
     print_list(listname)
-
     while True:
         print("\nActions:\nExit / Check as done / Delete entry")
         multiChoice = input()
