@@ -83,9 +83,9 @@ def delete_if_empty(filepath):
     with open(f"lists/{filepath}.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
-        if len(rows) == 0:
-            print("There are no entries in this list remaining, the list will now be deleted.")
-            os.remove(f"lists/{filepath}.csv")
+    if len(rows) == 0:
+        print("\nThere are no entries in this list remaining, the list will now be deleted.")
+        os.remove(f"lists/{filepath}.csv")
 
 # Main program logic
 
@@ -132,7 +132,6 @@ if option == "A":
             if os.path.exists(f"lists/{listname}.csv"):
                 print_list(listname)
         if multiChoice == "Exit":
-            print_list(listname)
             break
 elif option == "B":
     print("\nEnter the name of the to-do list you want to read and change: ")
@@ -155,10 +154,10 @@ elif option == "B":
             print("Input the name of the task that you want to delete:")
             deleteInput = input()
             delete(viewChoice, deleteInput)
+            delete_if_empty(viewChoice)
             if os.path.exists(f"lists/{viewChoice}.csv"):
                 print_list(viewChoice)
         if multiChoice == "Exit":
-            print_list(viewChoice)
             break
 elif option == "C":
     print("\nEnter the name of the to-do list you want to delete: ")
